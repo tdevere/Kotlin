@@ -1,15 +1,19 @@
 package com.example.vsackotlin
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
 import com.example.vsackotlin.databinding.ActivityMainBinding
+import com.google.android.material.snackbar.Snackbar
+import com.microsoft.appcenter.AppCenter
+import com.microsoft.appcenter.analytics.Analytics
+import com.microsoft.appcenter.crashes.Crashes
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +22,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        AppCenter.start(
+            application, "505a70c7-a0c9-4c70-8d3b-539811ea687f",
+            Analytics::class.java, Crashes::class.java
+        )
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -31,6 +40,16 @@ class MainActivity : AppCompatActivity() {
         binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
+        }
+
+        val btnCrash = findViewById<Button>(R.id.btnCrash) as Button
+        btnCrash.setOnClickListener {
+            Crashes.generateTestCrash();
+        }
+
+        val btnTrackEvent = findViewById<Button>(R.id.btnTrackEvent) as Button
+        btnTrackEvent.setOnClickListener {
+            Analytics.trackEvent("TEST");
         }
     }
 
