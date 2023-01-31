@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         val btnCrash = findViewById<Button>(R.id.btnCrash) as Button
         btnCrash.setOnClickListener {
+            throw NegativeArraySizeException("1");
             Crashes.generateTestCrash();
         }
 
